@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.java_api.justask_backend.RequestData.CategoryRequest;
 import com.java_api.justask_backend.RequestData.UserRequest;
+import com.java_api.justask_backend.RequestData.productRequest;
 import com.java_api.justask_backend.entities.APIResponse;
 import com.java_api.justask_backend.entities.category_class;
 
@@ -41,6 +42,14 @@ public class category {
         APIResponse response;
         user rpt = new user();
         response = rpt.save_user(jdbcTemplate, p_requestdata);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/save_product")
+    public ResponseEntity<APIResponse> save_product(@Valid @RequestBody productRequest p_requestdata) {
+        APIResponse response;
+        product rpt = new product();
+        response = rpt.save_product(jdbcTemplate, p_requestdata);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
