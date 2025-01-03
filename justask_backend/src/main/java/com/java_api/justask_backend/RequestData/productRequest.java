@@ -10,4 +10,10 @@ public class productRequest {
 	public int p_cat_type;
 	public String p_size;
 
+
+    public int p_product_id;
+	public int p_pgno;
+	public int p_pgsz;
+	public String cat_type;
+
 }

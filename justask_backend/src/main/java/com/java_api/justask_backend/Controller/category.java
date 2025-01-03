@@ -52,6 +52,14 @@ public class category {
         response = rpt.save_product(jdbcTemplate, p_requestdata);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @PostMapping("/get_product")
+    public ResponseEntity<APIResponse> get_product(@Valid @RequestBody productRequest p_requestdata) {
+        APIResponse response;
+        product rpt = new product();
+        response = rpt.get_product(jdbcTemplate, p_requestdata);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
     
 }
 

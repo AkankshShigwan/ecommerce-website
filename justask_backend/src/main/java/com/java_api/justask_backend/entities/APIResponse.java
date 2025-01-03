@@ -28,4 +28,13 @@ public class APIResponse {
         tot_recs = 0;
         pnd_recs = 0;
     }
+
+    public APIResponse(HttpStatus status, String message, ArrayList data, int p_tot_rec, int p_pnd_rec) {
+        this.status = status;
+        this.message = message;
+        this.data = data;
+        tot_recs = p_tot_rec;
+        pnd_recs = p_pnd_rec;
+
+    }
 }
