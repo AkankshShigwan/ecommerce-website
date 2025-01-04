@@ -16,4 +16,9 @@ public class productRequest {
 	public int p_pgsz;
 	public String cat_type;
 
+	public int p_product_cd;
+	public int p_tag;
+	public String p_delivery_date;
+	public String p_product_img;
+
 }

@@ -116,7 +116,6 @@ public class product {
                         + "," + p_requestdata.p_pgsz + ",'" + p_requestdata.cat_type
                         + "', 'return1', 'return2');FETCH ALL IN \"return1\";FETCH ALL IN \"return2\";";
 
-                System.out.println(str_statement);
                 ss.execute(str_statement);
                 ss.getMoreResults();
                 ResultSet rs = ss.getResultSet();
@@ -152,6 +151,67 @@ public class product {
                 DataSourceUtils.releaseConnection(conn, ds);
                 conn = null;
                 result = new APIResponse(HttpStatus.OK, "Total " + data.size() + " Record/s received", data, m_tot_rec, m_pnd_rec);
+            }
+
+        } catch (Exception e) {
+            result = new APIResponse(
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+            result.message = e.getMessage();
+        }
+
+        finally {
+
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+        return result;
+    }
+
+    public APIResponse save_cart (JdbcTemplate p_jdbc, productRequest p_requestdata) {
+        APIResponse result = new APIResponse(HttpStatus.OK);
+        ArrayList<comm_result> data = new ArrayList<comm_result>();
+        Connection conn = null;
+        int m_tot_rec = 0;
+        int m_pnd_rec = 0;
+        try {
+            if (p_jdbc != null) {
+                DataSource ds = p_jdbc.getDataSource();
+                conn = DataSourceUtils.getConnection(ds);
+                Statement ss = conn.createStatement();
+                String str_statement = "call \"JustAskNext\".sp_save_cart('"
+                        + p_requestdata.p_auth_key + "','"
+                        + p_requestdata.p_product_name + "'," + p_requestdata.p_product_cd
+                        + "," + p_requestdata.p_tag + ",'" + p_requestdata.p_delivery_date
+                        + "'," + p_requestdata.p_price + ",'" + p_requestdata.p_product_img 
+                        + "','" + p_requestdata.p_size
+                        + "', 'return1');FETCH ALL IN \"return1\";";
+
+                ss.execute(str_statement);
+                ss.getMoreResults();
+                ResultSet rs = ss.getResultSet();
+
+                while (rs.next()) {
+                    comm_result tmp_client = new comm_result();
+                    tmp_client.msg = rs.getString("msg");
+                    tmp_client.Status = rs.getInt("status");
+                    tmp_client.refcode = rs.getInt("refcode");
+                    data.add(tmp_client);
+                }
+                // result.data = data;
+
+                rs.close();
+                ss.close();
+                conn.close();
+                DataSourceUtils.releaseConnection(conn, ds);
+                conn = null;
+                result = new APIResponse(HttpStatus.OK, "Total " + data.size() + " Record/s received", data);
             }
 
         } catch (Exception e) {
