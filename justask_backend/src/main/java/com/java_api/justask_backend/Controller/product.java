@@ -37,6 +37,24 @@ public class product {
         public String cat_name;
         public int m_actv;
     }
+
+    public class cart_dtls {
+        public int cart_cd;
+        public String product_name;
+        public int tag;
+        public String tag_type;
+        public String delivery_date;
+        public int price;
+        public String img;
+        public String delivery_charges;
+        public String cart_size;
+        public int product_cd;
+        public String product_size;
+        public String product_desc;
+        public String m_cat_type;
+        public int rating;
+        public int m_actv;
+    }
     
     public APIResponse save_product(JdbcTemplate p_jdbc, productRequest p_requestdata) {
         APIResponse result = new APIResponse(HttpStatus.OK);
@@ -212,6 +230,85 @@ public class product {
                 DataSourceUtils.releaseConnection(conn, ds);
                 conn = null;
                 result = new APIResponse(HttpStatus.OK, "Total " + data.size() + " Record/s received", data);
+            }
+
+        } catch (Exception e) {
+            result = new APIResponse(
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+            result.message = e.getMessage();
+        }
+
+        finally {
+
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+        return result;
+    }
+
+    public APIResponse get_cart(JdbcTemplate p_jdbc, productRequest p_requestdata) {
+        APIResponse result = new APIResponse(HttpStatus.OK);
+        ArrayList<cart_dtls> data = new ArrayList<cart_dtls>();
+        Connection conn = null;
+        int m_tot_rec = 0;
+        int m_pnd_rec = 0;
+        try {
+            if (p_jdbc != null) {
+                DataSource ds = p_jdbc.getDataSource();
+                conn = DataSourceUtils.getConnection(ds);
+                Statement ss = conn.createStatement();
+                String str_statement = "call \"JustAskNext\".sp_get_cart('"
+                        + p_requestdata.p_auth_key + "'," + p_requestdata.p_pgno
+                        + "," + p_requestdata.p_pgsz
+                        + ", 'return1', 'return2');FETCH ALL IN \"return1\";FETCH ALL IN \"return2\";";
+
+                ss.execute(str_statement);
+                ss.getMoreResults();
+                ResultSet rs = ss.getResultSet();
+
+                while (rs.next()) {
+                    cart_dtls tmp_client = new cart_dtls();
+
+                    tmp_client.cart_cd = rs.getInt("cart_cd");
+                    tmp_client.product_name = rs.getString("product_name");
+                    tmp_client.tag = rs.getInt("tag");
+                    tmp_client.tag_type = rs.getString("tag_type");
+                    tmp_client.delivery_date = rs.getString("delivery_date");
+                    tmp_client.price = rs.getInt("price");
+                    tmp_client.img = rs.getString("img");
+                    tmp_client.delivery_charges = rs.getString("delivery_charges");
+                    tmp_client.cart_size = rs.getString("cart_size");
+                    tmp_client.product_cd = rs.getInt("product_cd");
+                    tmp_client.product_size = rs.getString("product_size");
+                    tmp_client.product_desc = rs.getString("product_desc");
+                    tmp_client.m_cat_type = rs.getString("m_cat_type");
+                    tmp_client.rating = rs.getInt("rating");
+                    tmp_client.m_actv = rs.getInt("m_actv");
+
+                    data.add(tmp_client);
+                }
+                // result.data = data;
+
+                ss.getMoreResults();
+                rs = ss.getResultSet();
+                while (rs.next()) {
+                    m_tot_rec = rs.getInt(1);
+                    m_pnd_rec = rs.getInt(2);
+                }
+
+                rs.close();
+                ss.close();
+                conn.close();
+                DataSourceUtils.releaseConnection(conn, ds);
+                conn = null;
+                result = new APIResponse(HttpStatus.OK, "Total " + data.size() + " Record/s received", data, m_tot_rec, m_pnd_rec);
             }
 
         } catch (Exception e) {

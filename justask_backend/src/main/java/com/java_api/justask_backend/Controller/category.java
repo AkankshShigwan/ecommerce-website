@@ -68,6 +68,14 @@ public class category {
         response = rpt.save_cart(jdbcTemplate, p_requestdata);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @PostMapping("/get_cart")
+    public ResponseEntity<APIResponse> get_cart(@Valid @RequestBody productRequest p_requestdata) {
+        APIResponse response;
+        product rpt = new product();
+        response = rpt.get_cart(jdbcTemplate, p_requestdata);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
     
 }
 
