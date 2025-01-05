@@ -76,6 +76,37 @@ public class category {
         response = rpt.get_cart(jdbcTemplate, p_requestdata);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @PostMapping("/edit_profile")
+    public ResponseEntity<APIResponse> edit_profile(@Valid @RequestBody UserRequest p_requestdata) {
+        APIResponse response;
+        user rpt = new user();
+        response = rpt.edit_profile(jdbcTemplate, p_requestdata);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
     
+    @PostMapping("/get_profile")
+    public ResponseEntity<APIResponse> get_profile(@Valid @RequestBody UserRequest p_requestdata) {
+        APIResponse response;
+        user rpt = new user();
+        response = rpt.get_profile(jdbcTemplate, p_requestdata);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/save_order")
+    public ResponseEntity<APIResponse> save_order(@Valid @RequestBody productRequest p_requestdata) {
+        APIResponse response;
+        product rpt = new product();
+        response = rpt.save_order(jdbcTemplate, p_requestdata);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/get_orders")
+    public ResponseEntity<APIResponse> get_orders(@Valid @RequestBody productRequest p_requestdata) {
+        APIResponse response;
+        product rpt = new product();
+        response = rpt.get_orders(jdbcTemplate, p_requestdata);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
 

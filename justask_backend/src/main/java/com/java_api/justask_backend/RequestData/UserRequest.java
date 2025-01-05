@@ -8,4 +8,11 @@ public class UserRequest {
 	public String p_password;
 	public String p_tag;
 	public int p_role;
+
+	public int p_user_cd;
+	public String p_address1;
+	public String p_address2;
+	public int p_pincode;
+	public String p_state;
+	public String p_country;
 }

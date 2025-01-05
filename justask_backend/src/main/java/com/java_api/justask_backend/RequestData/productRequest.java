@@ -2,6 +2,8 @@ package com.java_api.justask_backend.RequestData;
 
 public class productRequest {
     public String p_auth_key;
+	public int p_user_cd;
+
 	public String p_product_name;
 	public String p_prduct_img;
 	public int p_price;
@@ -20,5 +22,10 @@ public class productRequest {
 	public int p_tag;
 	public String p_delivery_date;
 	public String p_product_img;
+
+	public int p_cart_cd;
+	public String p_order_date;
+	public int p_qty;
+	public int p_paided_tag;
 
 }
