@@ -108,5 +108,13 @@ public class category {
         response = rpt.get_orders(jdbcTemplate, p_requestdata);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @PostMapping("/cancel_orders")
+    public ResponseEntity<APIResponse> cancel_orders(@Valid @RequestBody productRequest p_requestdata) {
+        APIResponse response;
+        product rpt = new product();
+        response = rpt.cancel_orders(jdbcTemplate, p_requestdata);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
 

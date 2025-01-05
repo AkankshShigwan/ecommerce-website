@@ -477,6 +477,63 @@ public class product {
         return result;
     }
 
+    public APIResponse cancel_orders(JdbcTemplate p_jdbc, productRequest p_requestdata) {
+        APIResponse result = new APIResponse(HttpStatus.OK);
+        ArrayList<comm_result> data = new ArrayList<comm_result>();
+        Connection conn = null;
+        int m_tot_rec = 0;
+        int m_pnd_rec = 0;
+        try {
+            if (p_jdbc != null) {
+                DataSource ds = p_jdbc.getDataSource();
+                conn = DataSourceUtils.getConnection(ds);
+                Statement ss = conn.createStatement();
+                String str_statement = "call \"JustAskNext\".sp_cancel_order('"
+                        + p_requestdata.p_auth_key + "'," + p_requestdata.p_user_cd
+                        + "," + p_requestdata.p_order_cd
+                        + ", 'return1');FETCH ALL IN \"return1\";";
+                ss.execute(str_statement);
+                ss.getMoreResults();
+                ResultSet rs = ss.getResultSet();
+
+                while (rs.next()) {
+                    comm_result tmp_client = new comm_result();
+                    tmp_client.msg = rs.getString("msg");
+                    tmp_client.Status = rs.getInt("status");
+                    tmp_client.refcode = rs.getInt("refcode");
+                    data.add(tmp_client);
+                }
+                // result.data = data;
+
+                rs.close();
+                ss.close();
+                conn.close();
+                DataSourceUtils.releaseConnection(conn, ds);
+                conn = null;
+                result = new APIResponse(HttpStatus.OK, "Total " + data.size() + " Record/s received", data, m_tot_rec, m_pnd_rec);
+            }
+
+        } catch (Exception e) {
+            result = new APIResponse(
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+            result.message = e.getMessage();
+        }
+
+        finally {
+
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+        return result;
+    }
+
 
 
 }

@@ -28,4 +28,6 @@ public class productRequest {
 	public int p_qty;
 	public int p_paided_tag;
 
+	public int p_order_cd;
+
 }
