@@ -14,33 +14,22 @@ function header() {
             <Container>
                 <Navbar.Brand href="#home">JustAsk</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Form inline>
-                        <Row>
-                            <Col xs="auto">
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Search"
-                                    className=" mr-sm-2"
-                                />
-                            </Col>
-                        </Row>
-                    </Form>
-                    <Nav className="me-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
-                        <Nav.Link href="#link">Link</Nav.Link>
-                        <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">
-                                Another action
-                            </NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action/3.4">
-                                Separated link
-                            </NavDropdown.Item>
-                        </NavDropdown>
-                    </Nav>
+                <Navbar.Collapse className="justify-content-end">
+                    <div className='col-12 d-flex'>
+                        <Form className='col-lg-9'>
+                            <Form.Control
+                                type="text"
+                                placeholder="Search"
+                                className=" mr-sm-2"
+                            />
+                        </Form>
+                        <div className='col-lg-3 px-4 my-auto'>
+                            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                            <Navbar.Text className='px-2'>
+                                Sign up / Sign In
+                            </Navbar.Text>
+                        </div>
+                    </div>
                 </Navbar.Collapse>
             </Container>
         </Navbar>
