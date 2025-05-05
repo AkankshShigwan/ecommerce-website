@@ -12,7 +12,7 @@ function header() {
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container>
-                <Navbar.Brand href="#home"><i class="fa fa-star mx-2" aria-hidden="true"></i>JustAsk</Navbar.Brand>
+                <Navbar.Brand href="#home"><i className="fa fa-star mx-2" aria-hidden="true"></i>JustAsk</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse className="justify-content-end">
                     <div className='col-12 d-flex'>
@@ -24,10 +24,10 @@ function header() {
                             />
                         </Form>
                         <div className='col-lg-7 px-4 my-auto d-flex justify-content-end'>
-                            {/* <i class="fa fa-user-circle-o" aria-hidden="true"></i> */}
+                            {/* <i className="fa fa-user-circle-o" aria-hidden="true"></i> */}
                             <Navbar.Text className='px-2 py-0'>
-                                <Button>Login</Button>
-                                <Button className='mx-2'>Sign Un</Button>
+                                <a href='/LoginPage'><Button>Login</Button></a>
+                                <a href='/Signup'><Button className='mx-2'>Sign Un</Button></a>
                             </Navbar.Text>
                         </div>
                     </div>

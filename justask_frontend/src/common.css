@@ -8,7 +8,25 @@
     background-size: 14px;
 }
 
+.form-control {
+    border-radius: 25px !important;
+}
+
 .signup-container{
     width: 50%;
     margin: 80px auto;
+}
+
+.login-container {
+    width: 50%;
+    margin: 200px auto;
+}
+
+.login-btn {
+    width: 35%;
+    margin-top: 25px;
+}
+
+.forget_password {
+    font-size: 16px;
 }
