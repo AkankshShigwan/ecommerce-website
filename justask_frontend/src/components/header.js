@@ -12,7 +12,10 @@ function header() {
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container>
-                <Navbar.Brand href="#home"><i className="fa fa-star mx-2" aria-hidden="true"></i>JustAsk</Navbar.Brand>
+                {/* <Navbar.Brand href="#home"><i className="fa fa-star mx-2" aria-hidden="true"></i>JustAsk</Navbar.Brand> */}
+                <Navbar.Brand href="#home">
+                    <img src='/icons/login-icon/justAsk_logo.png' alt="Just Ask Logo" width="90px" height="25px" />
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse className="justify-content-end">
                     <div className='col-12 d-flex'>

@@ -8,11 +8,21 @@
     background-size: 14px;
 }
 
-.form-control {
-    border-radius: 25px !important;
+.btn {
+    background-color: #5D7871 !important;
+    border-color: #5D7871 !important;
 }
 
-.signup-container{
+.common_btn {
+    width: 30%;
+    border-radius: 20px !important;
+}
+
+.form-control {
+    border-radius: 35px !important;
+}
+
+.signup-container {
     width: 50%;
     margin: 80px auto;
 }
@@ -23,10 +33,18 @@
 }
 
 .login-btn {
-    width: 35%;
     margin-top: 25px;
 }
 
 .forget_password {
     font-size: 16px;
+}
+
+.forgetpassword_container {
+    width: 50%;
+    margin: 100px auto;
+}
+
+.form-floating>label {
+    color: #5D7871;
 }

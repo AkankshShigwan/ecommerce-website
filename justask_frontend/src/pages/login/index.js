@@ -14,8 +14,8 @@ export default function Login() {
                             <Form.Control type="password" placeholder="Password" />
                         </FloatingLabel>
                         <div className='text-center'>
-                            <Button className="login-btn">Log In</Button>
-                            <p className="mt-2 font-2 forget_password">Forget Password ?</p>
+                            <Button className="login-btn common_btn">Log In</Button>
+                            <a href="/ForgetPassword"><p className="mt-2 font-2 forget_password">Forget Password ?</p></a>
                         </div>
                     </Form>
                 </div>
