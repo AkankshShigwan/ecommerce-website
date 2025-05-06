@@ -10,7 +10,7 @@ import Col from 'react-bootstrap/Col';
 
 function header() {
     return (
-        <Navbar expand="lg" className="bg-body-tertiary">
+        <Navbar expand="lg" className="headercss">
             <Container>
                 {/* <Navbar.Brand href="#home"><i className="fa fa-star mx-2" aria-hidden="true"></i>JustAsk</Navbar.Brand> */}
                 <Navbar.Brand href="#home">
@@ -28,9 +28,16 @@ function header() {
                         </Form>
                         <div className='col-lg-7 px-4 my-auto d-flex justify-content-end'>
                             {/* <i className="fa fa-user-circle-o" aria-hidden="true"></i> */}
-                            <Navbar.Text className='px-2 py-0'>
-                                <a href='/LoginPage'><Button>Login</Button></a>
-                                <a href='/Signup'><Button className='mx-2'>Sign Un</Button></a>
+                            <Navbar.Text className="d-flex align-items-center px-2 py-0">
+                                <i className="fa fa-user-circle" aria-hidden="true" style={{ color: "#fff", fontSize: "1.5rem" }}></i>
+
+                                <a href="/LoginPage">
+                                    <Button className="">Login</Button>
+                                </a>
+                                <span style={{ color: "#fff" }} >/</span>
+                                <a href="/Signup">
+                                    <Button >Sign Up</Button>
+                                </a>
                             </Navbar.Text>
                         </div>
                     </div>
