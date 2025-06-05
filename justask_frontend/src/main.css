@@ -46,3 +46,12 @@
     border-radius: 5px;
     text-align: center;
 }
+
+.footer-container {
+    background-color: #5D7871;
+}
+
+.footer-container li a,
+.footer-container p {
+    color: #fff !important;
+}
