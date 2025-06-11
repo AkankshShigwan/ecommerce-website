@@ -18,8 +18,6 @@ import com.java_api.justask_backend.RequestData.productRequest;
 import com.java_api.justask_backend.entities.APIResponse;
 import com.java_api.justask_backend.entities.category_class;
 
-
-
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/justAsk")
@@ -84,7 +82,7 @@ public class category {
         response = rpt.edit_profile(jdbcTemplate, p_requestdata);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-    
+
     @PostMapping("/get_profile")
     public ResponseEntity<APIResponse> get_profile(@Valid @RequestBody UserRequest p_requestdata) {
         APIResponse response;
@@ -116,5 +114,12 @@ public class category {
         response = rpt.cancel_orders(jdbcTemplate, p_requestdata);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-}
 
+    @PostMapping("/login")
+    public ResponseEntity<APIResponse> user_login(@Valid @RequestBody UserRequest p_requestdata) {
+        APIResponse response;
+        user rpt = new user();
+        response = rpt.user_login(jdbcTemplate, p_requestdata);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+}

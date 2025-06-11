@@ -1,6 +1,13 @@
 import "./filter.css";
+import { useNavigate } from 'react-router-dom';
 
 function ProductContent(props) {
+
+    const router = useNavigate();
+
+    function redirect_details(e) {
+        router('/productDetails');
+    }
 
     return (
         <div className="content col-md-9 px-4">
@@ -22,7 +29,7 @@ function ProductContent(props) {
             <div className="row row-grid">
                 {props.productsData.map(product => (
                     <div key={product.id} className="col-md-6 col-lg-4 col-xl-4 mb-4">
-                        <img src={product.imageUrl} alt={`Product ${product.id}`} className="img-fluid" />
+                        <img src={product.imageUrl} alt={`Product ${product.id}`} className="img-fluid" onClick={(e) => { redirect_details(e) }} />
                     </div>
                 ))}
             </div>

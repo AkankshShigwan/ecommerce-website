@@ -22,6 +22,16 @@ public class user {
         public int refcode;
     }
 
+    public class login_result {
+        public String msg;
+        public int Status;
+        public int refcode;
+        public String user_name;
+        public int role_cd;
+        public String email;
+
+    }
+
     public class profile_dtls {
         public int user_cd;
         public String name;
@@ -37,7 +47,6 @@ public class user {
         public int role;
     }
 
-
     public APIResponse save_user(JdbcTemplate p_jdbc, UserRequest p_requestdata) {
         APIResponse result = new APIResponse(HttpStatus.OK);
         ArrayList<comm_result> data = new ArrayList<comm_result>();
@@ -49,7 +58,7 @@ public class user {
                 DataSource ds = p_jdbc.getDataSource();
                 conn = DataSourceUtils.getConnection(ds);
                 Statement ss = conn.createStatement();
-                String str_statement = "call \"JustAskNext\".sp_registration('"
+                String str_statement = "call \"justAskNext\".sp_registration('"
                         + p_requestdata.p_auth_key + "','"
                         + p_requestdata.p_email + "','" + p_requestdata.p_name
                         + "','" + p_requestdata.p_mobile + "','" + p_requestdata.p_password
@@ -98,7 +107,6 @@ public class user {
         return result;
     }
 
-
     public APIResponse edit_profile(JdbcTemplate p_jdbc, UserRequest p_requestdata) {
         APIResponse result = new APIResponse(HttpStatus.OK);
         ArrayList<comm_result> data = new ArrayList<comm_result>();
@@ -110,7 +118,7 @@ public class user {
                 DataSource ds = p_jdbc.getDataSource();
                 conn = DataSourceUtils.getConnection(ds);
                 Statement ss = conn.createStatement();
-                String str_statement = "call \"JustAskNext\".sp_edit_profile('"
+                String str_statement = "call \"justAskNext\".sp_edit_profile('"
                         + p_requestdata.p_auth_key + "',"
                         + p_requestdata.p_user_cd + ",'" + p_requestdata.p_address1
                         + "','" + p_requestdata.p_address2 + "'," + p_requestdata.p_pincode
@@ -170,11 +178,11 @@ public class user {
                 DataSource ds = p_jdbc.getDataSource();
                 conn = DataSourceUtils.getConnection(ds);
                 Statement ss = conn.createStatement();
-                String str_statement = "call \"JustAskNext\".sp_get_profile('"
+                String str_statement = "call \"justAskNext\".sp_get_profile('"
                         + p_requestdata.p_auth_key + "',"
-                        + p_requestdata.p_user_cd 
+                        + p_requestdata.p_user_cd
                         + ", 'return1');FETCH ALL IN \"return1\";";
-                
+
                 ss.execute(str_statement);
                 ss.getMoreResults();
                 ResultSet rs = ss.getResultSet();
@@ -226,5 +234,67 @@ public class user {
 
         return result;
     }
-    
+
+    public APIResponse user_login(JdbcTemplate p_jdbc, UserRequest p_requestdata) {
+        APIResponse result = new APIResponse(HttpStatus.OK);
+        ArrayList<login_result> data = new ArrayList<login_result>();
+        Connection conn = null;
+        int m_tot_rec = 0;
+        int m_pnd_rec = 0;
+        try {
+            if (p_jdbc != null) {
+                DataSource ds = p_jdbc.getDataSource();
+                conn = DataSourceUtils.getConnection(ds);
+                Statement ss = conn.createStatement();
+                String str_statement = "call \"justAskNext\".sp_login('"
+                        + p_requestdata.p_auth_key + "','"
+                        + p_requestdata.p_email + "','" + p_requestdata.p_password
+                        + "', 'return1');FETCH ALL IN \"return1\";";
+                System.out.println(str_statement);
+                ss.execute(str_statement);
+                ss.getMoreResults();
+                ResultSet rs = ss.getResultSet();
+
+                while (rs.next()) {
+                    login_result tmp_client = new login_result();
+                    tmp_client.msg = rs.getString("msg");
+                    tmp_client.Status = rs.getInt("status");
+                    tmp_client.refcode = rs.getInt("refcode");
+                    tmp_client.role_cd = rs.getInt("role_cd");
+                    tmp_client.user_name = rs.getString("usr_name");
+                    tmp_client.email = rs.getString("email");
+
+                    data.add(tmp_client);
+                }
+                // result.data = data;
+
+                rs.close();
+                ss.close();
+                conn.close();
+                DataSourceUtils.releaseConnection(conn, ds);
+                conn = null;
+                result = new APIResponse(HttpStatus.OK, "Total " + data.size() + " Record/s received", data);
+            }
+
+        } catch (Exception e) {
+            result = new APIResponse(
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+            result.message = e.getMessage();
+        }
+
+        finally {
+
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+        return result;
+    }
+
 }

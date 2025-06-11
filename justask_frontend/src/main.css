@@ -55,3 +55,12 @@
 .footer-container p {
     color: #fff !important;
 }
+
+.img-in-cart {
+    height: 50px !important;
+    width: 50px !important;
+}
+
+.text-white {
+    color: #fff;
+}

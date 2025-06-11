@@ -83,7 +83,7 @@ public class product {
                 DataSource ds = p_jdbc.getDataSource();
                 conn = DataSourceUtils.getConnection(ds);
                 Statement ss = conn.createStatement();
-                String str_statement = "call \"JustAskNext\".sp_save_product('"
+                String str_statement = "call \"justAskNext\".sp_save_product('"
                         + p_requestdata.p_auth_key + "','"
                         + p_requestdata.p_product_name + "','" + p_requestdata.p_prduct_img
                         + "'," + p_requestdata.p_price + ",'" + p_requestdata.p_description
@@ -144,7 +144,7 @@ public class product {
                 DataSource ds = p_jdbc.getDataSource();
                 conn = DataSourceUtils.getConnection(ds);
                 Statement ss = conn.createStatement();
-                String str_statement = "call \"JustAskNext\".sp_get_product('"
+                String str_statement = "call \"justAskNext\".sp_get_product('"
                         + p_requestdata.p_auth_key + "',"
                         + p_requestdata.p_product_id + "," + p_requestdata.p_pgno
                         + "," + p_requestdata.p_pgsz + ",'" + p_requestdata.cat_type
@@ -219,7 +219,7 @@ public class product {
                 DataSource ds = p_jdbc.getDataSource();
                 conn = DataSourceUtils.getConnection(ds);
                 Statement ss = conn.createStatement();
-                String str_statement = "call \"JustAskNext\".sp_save_cart('"
+                String str_statement = "call \"justAskNext\".sp_save_cart('"
                         + p_requestdata.p_auth_key + "','"
                         + p_requestdata.p_product_name + "'," + p_requestdata.p_product_cd
                         + "," + p_requestdata.p_tag + ",'" + p_requestdata.p_delivery_date
@@ -280,7 +280,7 @@ public class product {
                 DataSource ds = p_jdbc.getDataSource();
                 conn = DataSourceUtils.getConnection(ds);
                 Statement ss = conn.createStatement();
-                String str_statement = "call \"JustAskNext\".sp_get_cart('"
+                String str_statement = "call \"justAskNext\".sp_get_cart('"
                         + p_requestdata.p_auth_key + "'," + p_requestdata.p_pgno
                         + "," + p_requestdata.p_pgsz + "," + p_requestdata.p_user_cd
                         + ", 'return1', 'return2');FETCH ALL IN \"return1\";FETCH ALL IN \"return2\";";
@@ -359,7 +359,7 @@ public class product {
                 DataSource ds = p_jdbc.getDataSource();
                 conn = DataSourceUtils.getConnection(ds);
                 Statement ss = conn.createStatement();
-                String str_statement = "call \"JustAskNext\".sp_save_order('"
+                String str_statement = "call \"justAskNext\".sp_save_order('"
                         + p_requestdata.p_auth_key + "',"
                         + p_requestdata.p_cart_cd + "," + p_requestdata.p_product_cd
                         + ",'" + p_requestdata.p_order_date + "'," + p_requestdata.p_qty
@@ -420,7 +420,7 @@ public class product {
                 DataSource ds = p_jdbc.getDataSource();
                 conn = DataSourceUtils.getConnection(ds);
                 Statement ss = conn.createStatement();
-                String str_statement = "call \"JustAskNext\".sp_get_orders('"
+                String str_statement = "call \"justAskNext\".sp_get_orders('"
                         + p_requestdata.p_auth_key + "'," + p_requestdata.p_user_cd
                         + ", 'return1');FETCH ALL IN \"return1\";";
                 System.out.println(str_statement);
@@ -488,7 +488,7 @@ public class product {
                 DataSource ds = p_jdbc.getDataSource();
                 conn = DataSourceUtils.getConnection(ds);
                 Statement ss = conn.createStatement();
-                String str_statement = "call \"JustAskNext\".sp_cancel_order('"
+                String str_statement = "call \"justAskNext\".sp_cancel_order('"
                         + p_requestdata.p_auth_key + "'," + p_requestdata.p_user_cd
                         + "," + p_requestdata.p_order_cd
                         + ", 'return1');FETCH ALL IN \"return1\";";

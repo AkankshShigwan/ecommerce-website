@@ -1,14 +1,16 @@
 import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { openModal } from '../reduxstore/modelslice';
+import MyCart from '../pages/mycart';
 
-function header() {
+function Header() {
+
+    const dispatch = useDispatch();
+
     return (
         <Navbar expand="lg" className="headercss">
             <Container>
@@ -30,14 +32,20 @@ function header() {
                             {/* <i className="fa fa-user-circle-o" aria-hidden="true"></i> */}
                             <Navbar.Text className="d-flex align-items-center px-2 py-0">
                                 <i className="fa fa-user-circle" aria-hidden="true" style={{ color: "#fff", fontSize: "1.5rem" }}></i>
-
-                                <a href="/LoginPage">
+                                <a >
+                                    <Button className="">Akshu</Button>
+                                </a>
+                                {/* <a href="/LoginPage">
                                     <Button className="">Login</Button>
                                 </a>
                                 <span style={{ color: "#fff" }} >/</span>
                                 <a href="/Signup">
                                     <Button >Sign Up</Button>
-                                </a>
+                                </a> */}
+                                <Button variant="primary" onClick={() => dispatch(openModal())} className="me-2">
+                                    <i className="fa fa-shopping-cart" aria-hidden="true" style={{ color: "#fff", fontSize: "1.5rem" }}></i>
+                                </Button>
+                                <MyCart />
                             </Navbar.Text>
                         </div>
                     </div>
@@ -47,4 +55,4 @@ function header() {
     );
 }
 
-export default header;
+export default Header;

@@ -32,7 +32,7 @@ public class category_class {
                 DataSource ds = p_jdbc.getDataSource();
                 conn = DataSourceUtils.getConnection(ds);
                 Statement ss = conn.createStatement();
-                String str_statement = "call \"JustAskNext\".get_category_type('"
+                String str_statement = "call \"justAskNext\".get_category_type('"
                         + p_requestdata.p_auth_key + "',"
                         + p_requestdata.p_usr_cd 
                         + ", 'return1');FETCH ALL IN \"return1\";";
