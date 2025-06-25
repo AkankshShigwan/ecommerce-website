@@ -29,10 +29,15 @@ public class product {
     public class product_dtls {
         public int product_id;
         public String product_name;
-        public String product_img;
+        public String product_img1;
+        public String product_img2;
+        public String product_img3;
+        public String product_img4;
         public String product_price;
         public String product_desc;
         public int product_rating;
+        public String product_dtls;
+        public String category_name;
         public String cat_type;
         public String product_size;
         public String cat_name;
@@ -44,9 +49,9 @@ public class product {
         public String product_name;
         public int tag;
         public String tag_type;
-        public String delivery_date;
+        public String expected_delivery_date;
         public int price;
-        public String img;
+        public String product_img;
         public String delivery_charges;
         public String cart_size;
         public int product_cd;
@@ -58,26 +63,27 @@ public class product {
     }
 
     public class orderdtls {
-        public int id; 
+        public int id;
         public int product_cd;
         public String product_name;
         public int price;
         public String order_dt;
         public String delivery_dt;
         public int qty;
-        public int paided_tag; 
-        public int m_actv; 
-        public String size; 
-        public int cart_cd; 
-        public int user_cd;        
+        public int paided_tag;
+        public int m_actv;
+        public String size;
+        public int cart_cd;
+        public int user_cd;
     }
-    
+
     public APIResponse save_product(JdbcTemplate p_jdbc, productRequest p_requestdata) {
         APIResponse result = new APIResponse(HttpStatus.OK);
         ArrayList<comm_result> data = new ArrayList<comm_result>();
         Connection conn = null;
         int m_tot_rec = 0;
         int m_pnd_rec = 0;
+
         try {
             if (p_jdbc != null) {
                 DataSource ds = p_jdbc.getDataSource();
@@ -85,12 +91,14 @@ public class product {
                 Statement ss = conn.createStatement();
                 String str_statement = "call \"justAskNext\".sp_save_product('"
                         + p_requestdata.p_auth_key + "','"
-                        + p_requestdata.p_product_name + "','" + p_requestdata.p_prduct_img
-                        + "'," + p_requestdata.p_price + ",'" + p_requestdata.p_description
-                        + "'," + p_requestdata.p_rating + "," + p_requestdata.p_cat_type 
-                        + ",'" + p_requestdata.p_size
-                        + "', 'return1');FETCH ALL IN \"return1\";";
-
+                        + p_requestdata.p_product_name + "','" + p_requestdata.p_product_desc
+                        + "','" + p_requestdata.p_prduct_img1 + "','" + p_requestdata.p_prduct_img2
+                        + "','" + p_requestdata.p_prduct_img3 + "','" + p_requestdata.p_prduct_img4
+                        + "','" + p_requestdata.p_rating + "','" + p_requestdata.p_price
+                        + "','" + p_requestdata.p_product_dtls + "'," + p_requestdata.p_cat_type
+                        + ",'" + p_requestdata.p_size + "'," + p_requestdata.p_product_id
+                        + ", 'return1');FETCH ALL IN \"return1\";";
+                System.out.println("str_statement " + str_statement);
                 ss.execute(str_statement);
                 ss.getMoreResults();
                 ResultSet rs = ss.getResultSet();
@@ -147,8 +155,8 @@ public class product {
                 String str_statement = "call \"justAskNext\".sp_get_product('"
                         + p_requestdata.p_auth_key + "',"
                         + p_requestdata.p_product_id + "," + p_requestdata.p_pgno
-                        + "," + p_requestdata.p_pgsz + ",'" + p_requestdata.cat_type
-                        + "', 'return1', 'return2');FETCH ALL IN \"return1\";FETCH ALL IN \"return2\";";
+                        + "," + p_requestdata.p_pgsz + "," + p_requestdata.cat_type
+                        + ", 'return1', 'return2');FETCH ALL IN \"return1\";FETCH ALL IN \"return2\";";
 
                 ss.execute(str_statement);
                 ss.getMoreResults();
@@ -159,13 +167,17 @@ public class product {
 
                     tmp_client.product_id = rs.getInt("product_id");
                     tmp_client.product_name = rs.getString("product_name");
-                    tmp_client.product_img = rs.getString("product_img");
+                    tmp_client.product_img1 = rs.getString("product_img1");
+                    tmp_client.product_img2 = rs.getString("product_img2");
+                    tmp_client.product_img3 = rs.getString("product_img3");
+                    tmp_client.product_img4 = rs.getString("product_img4");
                     tmp_client.product_price = rs.getString("product_price");
                     tmp_client.product_desc = rs.getString("product_desc");
                     tmp_client.product_rating = rs.getInt("product_rating");
+                    tmp_client.product_dtls = rs.getString("prod_dtls");
                     tmp_client.cat_type = rs.getString("cat_type");
                     tmp_client.product_size = rs.getString("product_size");
-                    tmp_client.cat_name = rs.getString("cat_name");
+                    tmp_client.category_name = rs.getString("category_name");
                     tmp_client.m_actv = rs.getInt("m_actv");
 
                     data.add(tmp_client);
@@ -184,7 +196,8 @@ public class product {
                 conn.close();
                 DataSourceUtils.releaseConnection(conn, ds);
                 conn = null;
-                result = new APIResponse(HttpStatus.OK, "Total " + data.size() + " Record/s received", data, m_tot_rec, m_pnd_rec);
+                result = new APIResponse(HttpStatus.OK, "Total " + data.size() + " Record/s received", data, m_tot_rec,
+                        m_pnd_rec);
             }
 
         } catch (Exception e) {
@@ -208,7 +221,7 @@ public class product {
         return result;
     }
 
-    public APIResponse save_cart (JdbcTemplate p_jdbc, productRequest p_requestdata) {
+    public APIResponse save_cart(JdbcTemplate p_jdbc, productRequest p_requestdata) {
         APIResponse result = new APIResponse(HttpStatus.OK);
         ArrayList<comm_result> data = new ArrayList<comm_result>();
         Connection conn = null;
@@ -220,11 +233,12 @@ public class product {
                 conn = DataSourceUtils.getConnection(ds);
                 Statement ss = conn.createStatement();
                 String str_statement = "call \"justAskNext\".sp_save_cart('"
-                        + p_requestdata.p_auth_key + "','"
-                        + p_requestdata.p_product_name + "'," + p_requestdata.p_product_cd
-                        + "," + p_requestdata.p_tag + ",'" + p_requestdata.p_delivery_date
-                        + "'," + p_requestdata.p_price + ",'" + p_requestdata.p_product_img 
-                        + "','" + p_requestdata.p_size + "'," + p_requestdata.p_user_cd
+                        + p_requestdata.p_auth_key + "',"
+                        + p_requestdata.p_product_cd
+                        + "," + p_requestdata.p_tag + ",'" + p_requestdata.p_expected_delivery_date
+                        + "','" + p_requestdata.p_size + "','" + p_requestdata.p_qty
+                        + "','" + p_requestdata.p_delivery_charges + "'," + p_requestdata.p_user_cd + ","
+                        + p_requestdata.p_isedit
                         + ", 'return1');FETCH ALL IN \"return1\";";
 
                 ss.execute(str_statement);
@@ -295,14 +309,12 @@ public class product {
                     tmp_client.cart_cd = rs.getInt("cart_cd");
                     tmp_client.product_name = rs.getString("product_name");
                     tmp_client.tag = rs.getInt("tag");
-                    tmp_client.tag_type = rs.getString("tag_type");
-                    tmp_client.delivery_date = rs.getString("delivery_date");
+                    tmp_client.expected_delivery_date = rs.getString("expected_delivery_date");
                     tmp_client.price = rs.getInt("price");
-                    tmp_client.img = rs.getString("img");
+                    tmp_client.product_img = rs.getString("product_img");
                     tmp_client.delivery_charges = rs.getString("delivery_charges");
-                    tmp_client.cart_size = rs.getString("cart_size");
-                    tmp_client.product_cd = rs.getInt("product_cd");
                     tmp_client.product_size = rs.getString("product_size");
+                    tmp_client.product_cd = rs.getInt("product_cd");
                     tmp_client.product_desc = rs.getString("product_desc");
                     tmp_client.m_cat_type = rs.getString("m_cat_type");
                     tmp_client.rating = rs.getInt("rating");
@@ -324,7 +336,8 @@ public class product {
                 conn.close();
                 DataSourceUtils.releaseConnection(conn, ds);
                 conn = null;
-                result = new APIResponse(HttpStatus.OK, "Total " + data.size() + " Record/s received", data, m_tot_rec, m_pnd_rec);
+                result = new APIResponse(HttpStatus.OK, "Total " + data.size() + " Record/s received", data, m_tot_rec,
+                        m_pnd_rec);
             }
 
         } catch (Exception e) {
@@ -361,12 +374,14 @@ public class product {
                 Statement ss = conn.createStatement();
                 String str_statement = "call \"justAskNext\".sp_save_order('"
                         + p_requestdata.p_auth_key + "',"
-                        + p_requestdata.p_cart_cd + "," + p_requestdata.p_product_cd
-                        + ",'" + p_requestdata.p_order_date + "'," + p_requestdata.p_qty
-                        + "," + p_requestdata.p_paided_tag + ",'" + p_requestdata.p_size
-                        + "'," + p_requestdata.p_user_cd
+                        + p_requestdata.p_cart_cd
+                        + ",'" + p_requestdata.p_qty
+                        + "','" + p_requestdata.p_size
+                        + "'," + p_requestdata.p_paided_tag
+                        + "," + p_requestdata.p_user_cd
+                        + "," + p_requestdata.p_isedit
                         + ", 'return1');FETCH ALL IN \"return1\";";
-                
+
                 ss.execute(str_statement);
                 ss.getMoreResults();
                 ResultSet rs = ss.getResultSet();
@@ -453,7 +468,8 @@ public class product {
                 conn.close();
                 DataSourceUtils.releaseConnection(conn, ds);
                 conn = null;
-                result = new APIResponse(HttpStatus.OK, "Total " + data.size() + " Record/s received", data, m_tot_rec, m_pnd_rec);
+                result = new APIResponse(HttpStatus.OK, "Total " + data.size() + " Record/s received", data, m_tot_rec,
+                        m_pnd_rec);
             }
 
         } catch (Exception e) {
@@ -510,7 +526,8 @@ public class product {
                 conn.close();
                 DataSourceUtils.releaseConnection(conn, ds);
                 conn = null;
-                result = new APIResponse(HttpStatus.OK, "Total " + data.size() + " Record/s received", data, m_tot_rec, m_pnd_rec);
+                result = new APIResponse(HttpStatus.OK, "Total " + data.size() + " Record/s received", data, m_tot_rec,
+                        m_pnd_rec);
             }
 
         } catch (Exception e) {
@@ -533,7 +550,5 @@ public class product {
 
         return result;
     }
-
-
 
 }
