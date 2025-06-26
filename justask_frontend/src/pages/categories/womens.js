@@ -69,10 +69,10 @@ function Womens() {
     return (
         <>
             <Layout>
-                <div class="overlay" style={{ display: "none" }}></div>
-                <div class="search-section mt-5">
-                    <div class="container-fluid container-xl">
-                        <div class="row">
+                <div className="overlay" style={{ display: "none" }}></div>
+                <div className="search-section mt-5">
+                    <div className="container-fluid container-xl">
+                        <div className="row">
                             <Filter filterData={filterData} />
                             <Products productsData={productsData} />
                         </div>

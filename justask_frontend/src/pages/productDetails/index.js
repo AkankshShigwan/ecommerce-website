@@ -114,7 +114,7 @@ const ProductDetail = () => {
                     <div className="product-content">
                         <h2 className="product-title">nike shoes</h2>
                         <div className="product-rating">
-                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i className="fa fa-star" aria-hidden="true"></i>
                             <i className="fa fa-star"></i>
                             <i className="fa fa-star"></i>
                             <i className="fa fa-star"></i>

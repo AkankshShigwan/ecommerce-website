@@ -75,6 +75,13 @@ public class product {
         public String size;
         public int cart_cd;
         public int user_cd;
+
+        public String delivery_charges;
+        public String expected_delivery_date;
+        public int m_cat_type;
+        public String product_img;
+        public String product_desc;
+        public String rating;
     }
 
     public APIResponse save_product(JdbcTemplate p_jdbc, productRequest p_requestdata) {
@@ -455,9 +462,15 @@ public class product {
                     tmp_client.qty = rs.getInt("qty");
                     tmp_client.paided_tag = rs.getInt("paided_tag");
                     tmp_client.m_actv = rs.getInt("m_actv");
-                    tmp_client.size = rs.getString("size");
+                    tmp_client.size = rs.getString("product_size");
                     tmp_client.cart_cd = rs.getInt("cart_cd");
                     tmp_client.user_cd = rs.getInt("user_cd");
+                    tmp_client.delivery_charges = rs.getString("delivery_charges");
+                    tmp_client.expected_delivery_date = rs.getString("expected_delivery_date");
+                    tmp_client.m_cat_type = rs.getInt("m_cat_type");
+                    tmp_client.product_img = rs.getString("product_img");
+                    tmp_client.product_desc = rs.getString("product_desc");
+                    tmp_client.rating = rs.getString("rating");
 
                     data.add(tmp_client);
                 }

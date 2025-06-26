@@ -14,6 +14,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ProductDetails from './pages/productDetails';
 import Mycart from './pages/mycart';
 import Checkout from './pages/checkout';
+import Add_product from './pages/admin/addproduct';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path='/productDetails' element={<ProductDetails />} />
         <Route path='/mycart' element={<Mycart />} />
         <Route path='/checkout' element={<Checkout />} />
+        <Route path='/admin/product' element={<Add_product />} />
       </Routes>
     </Router>
   );
