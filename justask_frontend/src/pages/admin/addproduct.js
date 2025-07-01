@@ -1,6 +1,11 @@
 import "../../style/product.css";
 import Layout from "../../components/layout";
 import { useState } from "react";
+import axios from 'axios';
+import { base_url, save_product_url } from "../../components/common/endpoints";
+import Swal from 'sweetalert2'
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Add_product() {
     const [images, setImages] = useState([]);
@@ -33,28 +38,43 @@ function Add_product() {
 
         const imageURLs = images.map((img) => img.preview); // Replace with actual uploaded URLs if needed
 
-        const payload = {
-            p_product_name: e.target.productName.value,
-            p_product_desc: e.target.description.value,
-            p_prduct_img1: imageURLs[0] || "",
-            p_prduct_img2: imageURLs[1] || "",
-            p_prduct_img3: imageURLs[2] || "",
-            p_prduct_img4: imageURLs[3] || "",
-            p_rating: e.target.rating.value,
-            p_price: e.target.price.value,
-            p_product_dtls: e.target.details.value, // Assume JSON string from a textarea or hidden field
-            p_cat_type: Number(e.target.category.value),
-            p_size: e.target.size.value,
-        };
+        Swal.fire({
+            icon: "warning",
+            title: "Do you want to add the product?",
+            showCancelButton: true,
+            confirmButtonText: "Save",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const payload = {
+                    p_product_name: e.target.productName.value,
+                    p_product_desc: e.target.description.value,
+                    p_prduct_img1: imageURLs[0] || "",
+                    p_prduct_img2: imageURLs[1] || "",
+                    p_prduct_img3: imageURLs[2] || "",
+                    p_prduct_img4: imageURLs[3] || "",
+                    p_rating: e.target.rating.value,
+                    p_price: e.target.price.value,
+                    p_product_dtls: e.target.details.value, // Assume JSON string from a textarea or hidden field
+                    p_cat_type: Number(e.target.category.value),
+                    p_size: e.target.size.value,
+                };
 
-        console.log("Payload to submit:", payload);
+                console.log("Payload to submit:", payload);
 
-        // Example API call
-        // fetch("/api/products", {
-        //   method: "POST",
-        //   headers: { "Content-Type": "application/json" },
-        //   body: JSON.stringify(payload),
-        // });
+                axios.post(base_url + save_product_url, payload)
+                    .then((response) => {
+                        console.log('product details', response.data.data[0].msg);
+                        Swal.fire({
+                            icon: "success",
+                            title: response.data.data[0].msg,
+                        });
+                    })
+                    .catch((err) => {
+                    });
+            } else if (result.isDenied) {
+                Swal.fire("Changes are not saved", "", "info");
+            }
+        });
     };
 
     return (
@@ -88,7 +108,7 @@ function Add_product() {
                     </div>
 
                     <div className="form-group">
-                        <label>Details (JSON)</label>
+                        <label>Product Details (JSON)</label>
                         <textarea
                             name="details"
                             rows="4"
@@ -114,10 +134,10 @@ function Add_product() {
                         <label>Category</label>
                         <select name="category" required>
                             <option value="">Select category</option>
-                            <option value="1">Electronics</option>
-                            <option value="2">Fashion</option>
-                            <option value="3">Home</option>
-                            <option value="4">Books</option>
+                            <option value="1">Womens</option>
+                            <option value="2">Mens</option>
+                            <option value="3">Kids</option>
+                            <option value="4">Other</option>
                         </select>
                     </div>
 
