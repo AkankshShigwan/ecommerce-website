@@ -1,0 +1,36 @@
+.signup-container {
+    background: #f5f9f7 !important;
+    transition: all 0.3s ease;
+}
+
+.signup-container h3 {
+    font-size: 1.8rem;
+}
+
+.signup-container .form-label {
+    font-weight: 500;
+    color: #333;
+}
+
+button.btn-outline-secondary {
+    border: none;
+    background: #4e5e5d;
+    color: white;
+}
+
+button.btn-outline-secondary:hover {
+    background: #3e4e4d;
+}
+
+
+.input-group-text {
+    border-radius: 50% !important;
+    margin-right: 10px;
+
+}
+
+.eye-btn {
+    border-radius: 50% !important;
+    padding: 15px !important;
+    margin-left: 10px !important;
+}

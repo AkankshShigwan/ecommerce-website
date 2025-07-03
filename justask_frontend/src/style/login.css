@@ -1,0 +1,34 @@
+.login-wrapper {
+    min-height: 80vh;
+    background-color: #ffffff;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    background-color: #f5f9f7;
+    border: 1px solid #d0e0dc;
+}
+
+.login-btn {
+    background-color: #5d7d75;
+    color: white;
+    font-weight: 500;
+    border: none;
+    transition: 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #48655f;
+}
+
+.forget-password {
+    font-size: 14px;
+    color: #3f5e56;
+    text-decoration: underline;
+    transition: 0.2s;
+}
+
+.forget-password:hover {
+    color: #2d4740;
+}
