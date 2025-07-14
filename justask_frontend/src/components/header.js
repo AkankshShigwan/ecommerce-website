@@ -35,17 +35,17 @@ function Header() {
                                 <a >
                                     <Button className="">Akshu</Button>
                                 </a>
-                                {/* <a href="/LoginPage">
+                                <a href="/LoginPage">
                                     <Button className="">Login</Button>
                                 </a>
                                 <span style={{ color: "#fff" }} >/</span>
                                 <a href="/Signup">
                                     <Button >Sign Up</Button>
-                                </a> */}
-                                <Button variant="primary" onClick={() => dispatch(openModal())} className="me-2">
+                                </a>
+                                {/* <Button variant="primary" onClick={() => dispatch(openModal())} className="me-2">
                                     <i className="fa fa-shopping-cart" aria-hidden="true" style={{ color: "#fff", fontSize: "1.5rem" }}></i>
                                 </Button>
-                                <MyCart />
+                                <MyCart /> */}
                             </Navbar.Text>
                         </div>
                     </div>
