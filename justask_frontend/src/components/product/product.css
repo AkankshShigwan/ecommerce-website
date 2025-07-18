@@ -1,6 +1,7 @@
 .card-wrapper {
     max-width: 1100px;
     margin: 0 auto;
+    padding: 2rem 0;
 }
 
 img {
@@ -9,34 +10,59 @@ img {
 }
 
 .img-display {
+    width: 100%;
+    height: 550px;
+    /* Fixed display area */
     overflow: hidden;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    position: relative;
+    background-color: #fff;
+    /* Optional: avoids transparency gaps */
 }
 
 .img-showcase {
     display: flex;
     width: 100%;
+    height: 100%;
+    /* Match .img-display height */
     transition: all 0.5s ease;
 }
 
 .img-showcase img {
-    min-width: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    flex-shrink: 0;
+    /* Prevent image shrinking */
+    background-color: #fff;
+    /* Optional: unify appearance */
 }
 
 .img-select {
     display: flex;
+    margin-top: 10px;
+    gap: 0.5rem;
 }
 
 .img-item {
-    margin: 0.3rem;
+    width: 80px;
+    height: 80px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
 }
 
-.img-item:nth-child(1),
-.img-item:nth-child(2),
-.img-item:nth-child(3) {
-    margin-right: 0;
+.img-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.3s ease;
 }
 
-.img-item:hover {
+.img-item:hover img {
     opacity: 0.8;
 }
 
@@ -45,54 +71,31 @@ img {
 }
 
 .product-title {
-    font-size: 3rem;
-    text-transform: capitalize;
+    font-size: 2rem;
     font-weight: 700;
-    position: relative;
     color: #12263a;
-    margin: 1rem 0;
+    margin-bottom: 1rem;
+    position: relative;
 }
 
 .product-title::after {
     content: "";
     position: absolute;
+    bottom: -5px;
     left: 0;
-    bottom: 0;
-    height: 4px;
     width: 80px;
+    height: 3px;
     background: #12263a;
-}
-
-.product-link {
-    text-decoration: none;
-    text-transform: uppercase;
-    font-weight: 400;
-    font-size: 0.9rem;
-    display: inline-block;
-    margin-bottom: 0.5rem;
-    background: #256eff;
-    color: #fff;
-    padding: 0 0.3rem;
-    transition: all 0.5s ease;
-}
-
-.product-link:hover {
-    opacity: 0.9;
 }
 
 .product-rating {
     color: #ffc107;
-}
-
-.product-rating span {
-    font-weight: 600;
-    color: #252525;
+    margin-bottom: 1rem;
 }
 
 .product-price {
-    margin: 1rem 0;
-    font-size: 1rem;
     font-weight: 700;
+    margin-bottom: 1rem;
 }
 
 .product-price span {
@@ -109,120 +112,134 @@ img {
 }
 
 .product-detail h2 {
-    text-transform: capitalize;
+    font-size: 1.2rem;
     color: #12263a;
-    padding-bottom: 0.6rem;
+    margin-bottom: 0.5rem;
 }
 
 .product-detail p {
-    font-size: 0.9rem;
-    padding: 0.3rem;
-    opacity: 0.8;
-}
-
-.product-detail ul {
-    margin: 1rem 0;
-    font-size: 0.9rem;
-}
-
-.product-detail ul li {
-    margin: 0;
-    list-style: none;
-    background: url(C:\Akshu\Projects\ecommerce-website\justask_frontend\public\icons\checkin_circle.png) left center no-repeat;
-    background-size: 18px;
-    padding-left: 1.7rem;
-    margin: 0.4rem 0;
-    font-weight: 600;
+    font-size: 0.95rem;
     opacity: 0.9;
 }
 
-.product-detail ul li span {
-    font-weight: 400;
+.product-detail ul {
+    margin-top: 0.5rem;
+    padding-left: 1.2rem;
+    list-style: disc;
+    font-size: 0.9rem;
 }
 
 .purchase-info {
-    margin: 1.5rem 0;
+    margin-top: 1.5rem;
 }
 
 .purchase-info input,
 .purchase-info .btn {
-    border: 1.5px solid #ddd;
+    padding: 0.5rem 1rem;
     border-radius: 25px;
-    text-align: center;
-    padding: 0.45rem 0.8rem;
-    outline: 0;
-    margin-right: 0.2rem;
-    margin-bottom: 0.4rem;
+    border: 1.5px solid #ddd;
+    outline: none;
+    margin-right: 0.5rem;
 }
 
 .purchase-info input {
     width: 60px;
+    text-align: center;
 }
 
 .purchase-info .btn {
+    background-color: #256eff;
+    color: white;
     cursor: pointer;
-    color: #fff;
-}
-
-.purchase-info .btn:first-of-type {
-    background: #256eff;
-}
-
-.purchase-info .btn:last-of-type {
-    background: #f64749;
 }
 
 .purchase-info .btn:hover {
     opacity: 0.9;
 }
 
-.social-links {
-    display: flex;
-    align-items: center;
-}
-
-.social-links a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    color: #000;
-    border: 1px solid #000;
-    margin: 0 0.2rem;
-    border-radius: 50%;
-    text-decoration: none;
-    font-size: 0.8rem;
-    transition: all 0.5s ease;
-}
-
-.social-links a:hover {
-    background: #000;
-    border-color: transparent;
-    color: #fff;
-}
-
 @media screen and (min-width: 992px) {
     .card {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-gap: 1.5rem;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
     }
 
     .card-wrapper {
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        display: block;
     }
 
-    .product-imgs {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+    .product_wrapper {
+        height: auto;
     }
+}
 
-    .product-content {
-        padding-top: 0;
-    }
+.product-dtl p {
+    font-size: 14px;
+    line-height: 24px;
+    color: #7a7a7a;
+}
+
+.product-dtl .form-control {
+    font-size: 15px;
+}
+
+.product-dtl label {
+    line-height: 16px;
+    font-size: 15px;
+}
+
+.form-control:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.product-count {
+    margin-top: 15px;
+}
+
+.product-count .qtyminus,
+.product-count .qtyplus {
+    width: 34px;
+    height: 48px;
+    background: #212529;
+    text-align: center;
+    font-size: 19px;
+    line-height: 36px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.product-count .qtyminus {
+    border-radius: 3px 0 0 3px;
+}
+
+.product-count .qtyplus {
+    border-radius: 0 3px 3px 0;
+}
+
+.product-count .qty {
+    width: 60px;
+    text-align: center;
+}
+
+.round-black-btn {
+    border-radius: 4px;
+    background: #212529;
+    color: #fff;
+    padding: 7px 45px;
+    display: inline-block;
+    margin-top: 20px;
+    border: solid 2px #212529;
+    transition: all 0.5s ease-in-out 0s;
+}
+
+.round-black-btn:hover,
+.round-black-btn:focus {
+    background: transparent;
+    color: #212529;
+    text-decoration: none;
+}
+
+.product-dropdown {
+    border-radius: 0px !important;
 }

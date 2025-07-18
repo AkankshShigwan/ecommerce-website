@@ -387,6 +387,7 @@ public class product {
                         + "'," + p_requestdata.p_paided_tag
                         + "," + p_requestdata.p_user_cd
                         + "," + p_requestdata.p_isedit
+                        + "," + p_requestdata.p_save_tag
                         + ", 'return1');FETCH ALL IN \"return1\";";
 
                 ss.execute(str_statement);

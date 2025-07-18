@@ -194,7 +194,7 @@
     overflow: hidden;
 }
 
-.btn::before {
+.login-btn::before {
     content: '';
     position: absolute;
     top: -100%;
@@ -206,7 +206,7 @@
     transition: .5s;
 }
 
-.btn:hover::before {
+.login-btn:hover::before {
     top: 0;
 }
 

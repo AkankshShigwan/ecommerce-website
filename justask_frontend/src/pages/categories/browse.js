@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import Layout from "../../components/layout";
 import Filter from "../../components/womens/filter";
 import Products from "../../components/womens/product";
@@ -66,6 +67,8 @@ function Womens() {
         // Add more as needed
     ];
 
+    const { id } = useParams();
+
     return (
         <>
             <Layout>
@@ -73,8 +76,8 @@ function Womens() {
                 <div className="search-section mt-5">
                     <div className="container-fluid container-xl">
                         <div className="row">
-                            <Filter filterData={filterData} />
-                            <Products productsData={productsData} />
+                            {/* <Filter filterData={filterData} /> */}
+                            <Products cat_id={id} />
                         </div>
                     </div>
                 </div>

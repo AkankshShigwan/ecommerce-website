@@ -2,28 +2,34 @@ import "../../style/product.css";
 import Layout from "../../components/layout";
 import { useState } from "react";
 import axios from 'axios';
-import { base_url, save_product_url } from "../../components/common/endpoints";
+import { base_url, save_product_url, uploadProduct_img } from "../../components/common/endpoints";
 import Swal from 'sweetalert2'
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Add_product() {
+
+    const [files, setFiles] = useState([]);
     const [images, setImages] = useState([]);
+    const [upload, setupload] = useState([]);
 
     const handleImageChange = (event) => {
-        const files = Array.from(event.target.files);
-        if (files.length + images.length > 4) {
+        const selectedFiles = Array.from(event.target.files);
+        if (selectedFiles.length + images.length > 4) {
             alert("You can only upload up to 4 images.");
             return;
         }
 
-        const newImages = files.map((file) => ({
+        const newImages = selectedFiles.map((file) => ({
             file,
             preview: URL.createObjectURL(file),
         }));
 
         setImages((prev) => [...prev, ...newImages]);
+        setFiles((prev) => [...prev, ...selectedFiles]); // Store files separately
     };
+
+    console.log('images', images);
 
     const triggerFileInput = () => {
         document.getElementById("imageInput").click();
@@ -33,30 +39,60 @@ function Add_product() {
         setImages((prev) => prev.filter((_, index) => index !== indexToRemove));
     };
 
+    const uploadImages = async (files) => {
+        const uploaded = [];
+
+        for (let file of files) {
+            const formData = new FormData();
+            formData.append("image", file);
+
+            try {
+                const res = await axios.post(base_url + uploadProduct_img, formData);
+                console.log('res', res.data.url)
+                uploaded.push({
+                    url: res.data.url, // adjust based on your API response
+                    name: file.name,
+                });
+            } catch (err) {
+                console.error("Upload failed for", file.name, err);
+            }
+        }
+
+        return uploaded;
+    };
+
+    console.log('upload', upload);
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        const productresult = details
+            .filter(item => item.key.trim())
+            .map(item => ({ [item.key]: item.value }));
 
-        const imageURLs = images.map((img) => img.preview); // Replace with actual uploaded URLs if needed
+        console.log('Final JSON:', productresult);
 
         Swal.fire({
             icon: "warning",
             title: "Do you want to add the product?",
             showCancelButton: true,
             confirmButtonText: "Save",
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
+                const uploaded = await uploadImages(files);
+                console.log('uploaded', uploaded);
+
                 const payload = {
                     p_product_name: e.target.productName.value,
                     p_product_desc: e.target.description.value,
-                    p_prduct_img1: imageURLs[0] || "",
-                    p_prduct_img2: imageURLs[1] || "",
-                    p_prduct_img3: imageURLs[2] || "",
-                    p_prduct_img4: imageURLs[3] || "",
+                    p_prduct_img1: uploaded[0]?.url || "",
+                    p_prduct_img2: uploaded[1]?.url || "",
+                    p_prduct_img3: uploaded[2]?.url || "",
+                    p_prduct_img4: uploaded[3]?.url || "",
                     p_rating: e.target.rating.value,
                     p_price: e.target.price.value,
-                    p_product_dtls: e.target.details.value, // Assume JSON string from a textarea or hidden field
+                    p_product_dtls: JSON.stringify(productresult), // Assume JSON string from a textarea or hidden field
                     p_cat_type: Number(e.target.category.value),
-                    p_size: e.target.size.value,
+                    p_size: JSON.stringify(selectedSizes),
                 };
 
                 console.log("Payload to submit:", payload);
@@ -67,6 +103,10 @@ function Add_product() {
                         Swal.fire({
                             icon: "success",
                             title: response.data.data[0].msg,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
                         });
                     })
                     .catch((err) => {
@@ -76,6 +116,39 @@ function Add_product() {
             }
         });
     };
+
+    const [details, setDetails] = useState([
+        { key: '', value: '' }
+    ]);
+
+    const handleChange = (index, field, value) => {
+        const updated = [...details];
+        updated[index][field] = value;
+        setDetails(updated);
+    };
+
+    const addField = () => {
+        setDetails([...details, { key: '', value: '' }]);
+    };
+
+    const removeField = (index) => {
+        const updated = details.filter((_, i) => i !== index);
+        setDetails(updated);
+    };
+
+    const sizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
+    const [selectedSizes, setSelectedSizes] = useState([]);
+
+    const handleCheckboxChange = (e) => {
+        const { value, checked } = e.target;
+        if (checked) {
+            setSelectedSizes([...selectedSizes, value]);
+        } else {
+            setSelectedSizes(selectedSizes.filter((size) => size !== value));
+        }
+    };
+
+    console.log('selectedSizes', selectedSizes);
 
     return (
         <Layout>
@@ -104,31 +177,48 @@ function Add_product() {
 
                     <div className="form-group">
                         <label>Size</label>
-                        <input name="size" type="text" placeholder="Product size" />
+                        <div className="checkbox-group d-flex">
+                            {sizes.map((size) => (
+                                <label key={size} style={{ marginRight: "10px" }}>
+                                    <input
+                                        type="checkbox"
+                                        value={size}
+                                        checked={selectedSizes.includes(size)}
+                                        onChange={handleCheckboxChange}
+                                    />
+                                    {size}
+                                </label>
+                            ))}
+                        </div>
                     </div>
 
-                    <div className="form-group">
-                        <label>Product Details (JSON)</label>
-                        <textarea
-                            name="details"
-                            rows="4"
-                            placeholder='Paste product details JSON'
-                            required
-                            defaultValue={`[{
-                            "Display": "Analogue",
-                            "Movement": "Mechanical",
-                            "Power source": "Battery",
-                            "Dial style": "Textured round stainless steel dial",
-                            "Features": "Reset Time",
-                            "Strap style": "Mauve bracelet style, stainless steel strap with a foldover closure",
-                            "Water resistance": "Water Resistant",
-                            "Size & Fit": {
-                                "Dial width": "35 mm",
-                                "Strap width": "18 mm"
-                            }
-                            }]`}
-                        ></textarea>
-                    </div>
+                    <label>Product Details</label>
+
+                    {details.map((item, index) => (
+                        <div key={index} className="d-flex my-2">
+                            <input
+                                type="text"
+                                placeholder="Product Detail"
+                                value={item.key}
+                                onChange={(e) => handleChange(index, 'key', e.target.value)}
+                                className="border px-2 py-1 rounded mx-2"
+                                required
+                            />
+                            <input
+                                type="text"
+                                placeholder="Value"
+                                value={item.value}
+                                onChange={(e) => handleChange(index, 'value', e.target.value)}
+                                className="border px-2 py-1 rounded mx-2"
+                                required
+                            />
+                            <button type="button" onClick={() => removeField(index)} className="cross-btn">×</button>
+                        </div>
+                    ))}
+
+                    <button type="button" onClick={addField} className="addmore_btn">
+                        + Add More
+                    </button>
 
                     <div className="form-group">
                         <label>Category</label>
@@ -205,6 +295,7 @@ function Add_product() {
                     <button type="submit" className="btn">➕ Add Product</button>
                 </form>
             </div>
+            <ToastContainer />
         </Layout>
     );
 }

@@ -38,5 +38,6 @@ public class productRequest {
 	public String p_expected_delivery_date;
 	public String p_delivery_charges;
 	public int p_isedit;
+	public int p_save_tag;
 
 }

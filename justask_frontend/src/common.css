@@ -17,6 +17,31 @@
     border-color: #5D7871 !important;
 }
 
+.addmore_btn {
+    background-color: #5D7871 !important;
+    border-color: #5D7871 !important;
+    color: #fff !important;
+    padding: 7px;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: block;
+}
+
+.cross-btn {
+    background-color: #fff;
+    color: red !important;
+    border: none;
+    padding: 7px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: block;
+}
+
 .common_btn {
     width: 30%;
     border-radius: 20px !important;
@@ -51,4 +76,8 @@
 
 .form-floating>label {
     color: #5D7871;
+}
+
+.text-white {
+    color: #fff;
 }

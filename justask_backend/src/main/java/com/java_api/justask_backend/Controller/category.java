@@ -1,8 +1,14 @@
 package com.java_api.justask_backend.Controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,7 +16,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.java_api.justask_backend.RequestData.CategoryRequest;
 import com.java_api.justask_backend.RequestData.UserRequest;
@@ -121,5 +131,42 @@ public class category {
         user rpt = new user();
         response = rpt.user_login(jdbcTemplate, p_requestdata);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Configuration
+    public class WebConfig implements WebMvcConfigurer {
+
+        @Override
+        public void addResourceHandlers(ResourceHandlerRegistry registry) {
+            registry.addResourceHandler("/uploads/**")
+                    .addResourceLocations("file:/C:/Akshu/Projects/ecommerce-website/justask_backend/uploads/");
+        }
+    }
+
+    private static final String UPLOAD_DIR = "C:/Akshu/Projects/ecommerce-website/justask_backend/uploads/";
+
+    @PostMapping("/upload")
+    public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("image") MultipartFile file) {
+        try {
+            // Create upload folder if it doesn't exist
+            File uploadDir = new File(UPLOAD_DIR);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            // Create a safe unique file name
+            String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            File destination = new File(uploadDir, filename);
+            file.transferTo(destination);
+
+            // Return URL assuming static resource mapping
+            String imageUrl = "http://localhost:8080/uploads/" + filename;
+
+            return ResponseEntity.ok(Map.of("url", imageUrl));
+        } catch (IOException e) {
+            e.printStackTrace(); // helpful during debugging
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Image upload failed", "message", e.getMessage()));
+        }
     }
 }

@@ -4,8 +4,13 @@ import "../../style/login.css";
 import { useState } from "react";
 import { base_url, login_url, sign_url } from "../../components/common/endpoints";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
 
 const Login = () => {
+
+    const router = useNavigate();
+
     const [isRegister, setIsRegister] = useState(false);
 
     function handlelogin(e) {
@@ -21,6 +26,20 @@ const Login = () => {
         axios.post(base_url + login_url, payload)
             .then((response) => {
                 console.log('login details', response.data.data[0].msg);
+                if (response.data.data[0].Status == 1) {
+                    localStorage.setItem("isLogin", true);
+                    localStorage.setItem("username", response.data.data[0].user_name);
+                    localStorage.setItem("userdtls", JSON.stringify(response.data.data));
+                    if (response.data.data[0].role_cd == 2) {
+                        router('/admin/product');
+                    } else {
+                        router('/');
+                    }
+                } else {
+                    toast.error(response.data.data[0].msg, {
+                        position: "top-center"
+                    });
+                }
             }).catch((err) => {
             });
     }
@@ -31,7 +50,7 @@ const Login = () => {
             p_auth_key: "",
             p_email: document.getElementById('signup_email').value,
             p_name: document.getElementById('user_name').value,
-            p_mobile: document.getElementById('email').value,
+            p_mobile: document.getElementById('signup_mobile').value,
             p_password: document.getElementById('signup_password').value,
             p_tag: "1",
             p_role: 1
@@ -41,7 +60,21 @@ const Login = () => {
 
         axios.post(base_url + sign_url, payload)
             .then((response) => {
-                console.log('login details', response.data.data[0].msg);
+                if (response.data.data[0].Status == 1) {
+                    localStorage.setItem("isLogin", true);
+                    toast.success(response.data.data[0].msg, {
+                        position: "top-center"
+                    });
+                    document.getElementById('signup_email').value = '';
+                    document.getElementById('user_name').value = '';
+                    document.getElementById('signup_mobile').value = '';
+                    document.getElementById('signup_password').value = '';
+                } else {
+                    toast.error(response.data.data[0].msg, {
+                        position: "top-center"
+                    });
+
+                }
             }).catch((err) => {
             });
     }
@@ -97,8 +130,8 @@ const Login = () => {
                         <i class="fa fa-envelope" aria-hidden="true"></i>
                     </div>
                     <div className="input-box animation" style={{ '--i': 19, '--j': 2 }}>
-                        <input type="number" id="signup_email" className="login-inputs" required />
-                        <label>Mbbile No.</label>
+                        <input type="number" id="signup_mobile" className="login-inputs" required />
+                        <label>Mobile No.</label>
                         <i class="fa fa-phone" aria-hidden="true"></i>
                     </div>
                     <div className="input-box animation" style={{ '--i': 20, '--j': 3 }}>
@@ -124,6 +157,7 @@ const Login = () => {
                     We're delighted to have you here. If you need any assistance, feel free to reach out.
                 </p>
             </div>
+            <ToastContainer />
         </div>
     );
 };
